@@ -105,7 +105,7 @@ Mais mon amour pour toi, lui, brûle à l'infini.`;
                 setTimeout(typeWriter, speed);
                 
                 // Défilement doux toutes les 5 lettres
-                if (i % 5 === 0) {
+                if (i % 7 === 0) {
                     requestAnimationFrame(smoothScroll);
                 }
             } else {
@@ -134,7 +134,7 @@ Mais mon amour pour toi, lui, brûle à l'infini.`;
 
         function showEnding() {
             const ending = document.getElementById("ending");
-            ending.innerHTML = "Je t'Aime <span class='heart'>❤</span>";
+            ending.innerHTML = "Je t'aime";
             ending.style.opacity = 1;
             smoothScroll();
         }
