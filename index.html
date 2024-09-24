@@ -11,10 +11,7 @@
             font-family: 'Georgia', serif;
             background-color: #000;
             color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
+            overflow-y: auto;
         }
         .container {
             max-width: 600px;
@@ -22,6 +19,7 @@
             text-align: center;
             position: relative;
             z-index: 1;
+            margin: 0 auto;
         }
         h1 {
             font-size: 2em;
@@ -39,13 +37,14 @@
             to { opacity: 1; }
         }
         .ember {
-            position: absolute;
+            position: fixed;
             width: 5px;
             height: 5px;
-            background: #ff6b35;
+            background: #8B0000; /* Rouge sang */
             border-radius: 50%;
             filter: blur(1px);
             animation: float 3s infinite ease-in-out;
+            z-index: 0;
         }
         @keyframes float {
             0%, 100% { transform: translateY(0) rotate(0deg); }
@@ -58,31 +57,31 @@
         <h1>Pour Caroline</h1>
         <div id="poeme"></div>
     </div>
-
+    <!-- Ajoutez votre élément audio ici lorsque vous aurez un fichier son :
+    <audio id="backgroundMusic" loop>
+        <source src="chemin_vers_votre_fichier_audio.mp3" type="audio/mpeg">
+        Votre navigateur ne supporte pas l'élément audio.
+    </audio>
+    -->
     <script>
         const poeme = `Les souvenirs brûlent comme des braises,
 Des moments où nos yeux, enlacés, se parlaient,
 Il y avait ce feu, cette flamme qui nous consumait,
 Aujourd'hui, c'est un vide qui me glace et me hante.
-
 Tes mots d'amour, qui résonnaient comme des promesses,
 Ont laissé place au silence, lourd et révélateur,
 Je revis chaque sourire, chaque regard enchanteur,
 Mais sans toi, tout s'effondre, et mon âme se blesse.
-
 Tu étais mon soleil, mon refuge, mon univers,
 Maintenant, je me consume dans l'ombre des regrets,
 Cherchant ta chaleur qui ne fait que s'estomper,
 Là où mon cœur, meurtri, espère à découvert.
-
 Je me perds dans les échos de ton nom chéri,
 Dans chaque souvenir qui me berce doucement,
 Je suis la cendre d'un feu qui s'éteint lentement,
 Mais mon amour pour toi, lui, brûle à l'infini.`;
-
         let i = 0;
         const speed = 50; // Vitesse de frappe en millisecondes
-
         function typeWriter() {
             if (i < poeme.length) {
                 document.getElementById("poeme").innerHTML += poeme.charAt(i);
@@ -90,12 +89,10 @@ Mais mon amour pour toi, lui, brûle à l'infini.`;
                 setTimeout(typeWriter, speed);
             }
         }
-
         window.onload = function() {
             typeWriter();
             createEmbers();
         }
-
         function createEmbers() {
             for (let i = 0; i < 20; i++) {
                 let ember = document.createElement('div');
