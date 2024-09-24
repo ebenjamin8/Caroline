@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pour Caroline</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body, html {
-            height: 100%;
+            min-height: 100vh;
             margin: 0;
-            font-family: 'Georgia', serif;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
             background-color: #000;
             color: #fff;
-            overflow-y: auto;
+            overflow-x: hidden;
         }
         .container {
             max-width: 600px;
@@ -20,18 +22,35 @@
             position: relative;
             z-index: 1;
             margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
         }
         h1 {
-            font-size: 2em;
+            font-size: 2.5em;
             margin-bottom: 20px;
             opacity: 0;
             animation: fadeIn 2s ease-in forwards;
+            font-family: 'Dancing Script', cursive;
         }
         #poeme {
             font-size: 1.2em;
             line-height: 1.6;
             white-space: pre-wrap;
             text-align: left;
+            flex-grow: 1;
+        }
+        #ending {
+            font-size: 2em;
+            margin-top: 30px;
+            font-family: 'Dancing Script', cursive;
+            opacity: 0;
+            transition: opacity 2s ease-in;
+        }
+        .heart {
+            color: #FF0000;
+            font-size: 1.2em;
         }
         @keyframes fadeIn {
             to { opacity: 1; }
@@ -56,13 +75,8 @@
     <div class="container">
         <h1>Pour Caroline</h1>
         <div id="poeme"></div>
+        <div id="ending"></div>
     </div>
-    <!-- Ajoutez votre élément audio ici lorsque vous aurez un fichier son :
-    <audio id="backgroundMusic" loop>
-        <source src="chemin_vers_votre_fichier_audio.mp3" type="audio/mpeg">
-        Votre navigateur ne supporte pas l'élément audio.
-    </audio>
-    -->
     <script>
         const poeme = `Les souvenirs brûlent comme des braises,
 Des moments où nos yeux, enlacés, se parlaient,
@@ -81,18 +95,55 @@ Dans chaque souvenir qui me berce doucement,
 Je suis la cendre d'un feu qui s'éteint lentement,
 Mais mon amour pour toi, lui, brûle à l'infini.`;
         let i = 0;
-        const speed = 50; // Vitesse de frappe en millisecondes
+        const speed = 70; // Vitesse de frappe
+        let lastScrollTime = 0;
+
         function typeWriter() {
             if (i < poeme.length) {
                 document.getElementById("poeme").innerHTML += poeme.charAt(i);
                 i++;
                 setTimeout(typeWriter, speed);
+                
+                // Défilement doux toutes les 5 lettres
+                if (i % 5 === 0) {
+                    requestAnimationFrame(smoothScroll);
+                }
+            } else {
+                setTimeout(showEnding, 1000); // Délai avant d'afficher la fin
             }
         }
+
+        function smoothScroll() {
+            const currentTime = Date.now();
+            if (currentTime - lastScrollTime > 500) { // Limite la fréquence de défilement
+                const scrollHeight = Math.max(
+                    document.body.scrollHeight, document.documentElement.scrollHeight,
+                    document.body.offsetHeight, document.documentElement.offsetHeight,
+                    document.body.clientHeight, document.documentElement.clientHeight
+                );
+                const windowHeight = window.innerHeight;
+                if (scrollHeight > windowHeight) {
+                    window.scrollTo({
+                        top: scrollHeight - windowHeight,
+                        behavior: 'smooth'
+                    });
+                    lastScrollTime = currentTime;
+                }
+            }
+        }
+
+        function showEnding() {
+            const ending = document.getElementById("ending");
+            ending.innerHTML = "Je t'Aime <span class='heart'>❤</span>";
+            ending.style.opacity = 1;
+            smoothScroll();
+        }
+
         window.onload = function() {
-            typeWriter();
+            setTimeout(typeWriter, 1000); // Délai avant de commencer à écrire
             createEmbers();
         }
+
         function createEmbers() {
             for (let i = 0; i < 20; i++) {
                 let ember = document.createElement('div');
